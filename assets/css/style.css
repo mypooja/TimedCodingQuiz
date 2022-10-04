@@ -1,0 +1,82 @@
+
+/* Styling for top section showing high scores nav and Timer */
+.top-flex-container {
+    display: flex;
+}
+
+#highScores {
+    /*align-self: flex-start;*/
+    flex: 50%;
+    text-align: left;
+}
+
+#time {
+    /*align-self: flex-end;*/
+    flex: 50%;
+    text-align: right;
+}
+
+/* Styling for introduction text and start button */
+.intro-flex-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.intro-flex-container > div {
+    max-width: 30%;
+    margin: 2px;
+}
+
+#introHeading {
+    font-size: xx-large;
+}
+
+#introSubHeading {
+    font-size: larger;
+}
+
+#startButton {
+    background-color: purple;
+    color: white;
+    font-size:large
+}
+
+/* Styling for question */
+.question-flex-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.question-flex-container > div {
+    max-width: 30%;
+}
+
+.question {
+    font-size: x-large;
+    font-weight: bold;
+    padding: 20px;
+    margin: 5px;
+    /*text-align-last:center;*/
+}
+
+.questionOption {
+    background-color: purple;
+    color: white;
+    padding: 5px;
+    margin: 2px;
+    /*margin: 5px;*/
+    /*text-align-last: left;*/
+    /*width: fit-content;*/
+}
+
+/*Styling for answer*/
+.answer {
+    width: 20%;
+    border-top: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+}
