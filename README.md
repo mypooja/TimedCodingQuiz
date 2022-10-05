@@ -18,6 +18,11 @@ If all the questions are done or timer reaches zero, a done page is shown to the
 
 User is asked to submit initials for storing score in local storage.
 
+Screenshots of different views of the website -
+![ScreenShot of the intro page](assets/images/Score-screenshot-1.png)
+![ScreenShot of the question page](assets/images/Score-screenshot-2.png)
+![ScreenShot of the score page](assets/images/Score-screenshot-3.png)
+
 ## Credits
 
 N/A
