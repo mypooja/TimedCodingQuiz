@@ -32,11 +32,20 @@ var questionArray = [dataTypeQuestion, arrayQuestions, conditionalQuestion, stri
 
 var currentQuestion;
 var currentQuestionCount = 0;
+var secondsLeft = 25;
+var timerInterval;
+
+function setTime() {
+    // Sets interval in variable
+    timerInterval = setInterval(timerDecrement, 1000);
+}
 
 function clearIntroTextAndPrintFirstQuestion() {
     var introText = document.querySelector(".intro-flex-container");
     introText.innerHTML = "";
     printQuestion();
+    setTime();
+    timerElement.textContent = secondsLeft;
 }
 
 function printQuestion() {
@@ -59,13 +68,18 @@ function printQuestion() {
 }
 
 function printDone() {
+    console.log("in done");
     let section = document.querySelector(".question-flex-container");
     section.innerHTML = "";
 
+    console.log("section inner html" + section.innerHTML);
+
     let doneDiv = document.createElement("div");
-    doneDiv.textContent = "All questions are done";
-    doneDiv.className = "All Done!";
+    doneDiv.textContent = "All Done!";
+    doneDiv.className = "done";
     section.appendChild(doneDiv);
+
+    console.log("section inner html" + section.innerHTML);
 }
 
 function checkAnswerAndPrintNextQuestion(event) {
@@ -78,16 +92,52 @@ function checkAnswerAndPrintNextQuestion(event) {
         answerDiv.textContent = "Correct!"
     } else {
         answerDiv.textContent = "Wrong!"
+        var timerReturn = timerDecrementByCount(15);
+        if (!timerReturn) {
+            return;
+        }
     }
 
     currentQuestionCount++;
     if (currentQuestionCount < questionArray.length) {
         printQuestion();
     } else {
-        printDone()
+        printDone();
     }
     
     section.appendChild(answerDiv);
+}
+
+function timerDecrement() {
+    timerElement.textContent = secondsLeft--;
+    console.log("in timerDecrement" + secondsLeft);
+    if (secondsLeft <= 0) {
+        timerElement.textContent = 0;
+        console.log("in timerDecrement 0");
+        printDone();
+        clearInterval(timerInterval);
+        return 0;
+    }
+    return 1;
+}
+
+function timerDecrementByCount(count) {
+    if (secondsLeft - count >= 0) {
+        secondsLeft = secondsLeft - count;
+    } else {
+        secondsLeft = 0;
+    }
+    timerElement.textContent = secondsLeft;
+    console.log("in timerDecrementByCount" + secondsLeft);
+    if (secondsLeft == 0) {
+        console.log("in timerDecrementByCount 0");
+        printDone();
+        clearInterval(timerInterval);
+        return 0;
+    }
+    else {
+        return 1;
+    }
 }
 
 
@@ -96,3 +146,5 @@ startBt.addEventListener("click", clearIntroTextAndPrintFirstQuestion);
 
 var questionOptionSelector = document.querySelector(".question-flex-container");
 questionOptionSelector.addEventListener("click", checkAnswerAndPrintNextQuestion);
+
+var timerElement = document.getElementById("timer");
