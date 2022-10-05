@@ -69,47 +69,72 @@ function printQuestion() {
 }
 
 function printDone() {
-    let section = document.querySelector(".question-flex-container");
-    section.innerHTML = "";
+    console.log("inside print done");
+    let questionSection = document.querySelector(".question-flex-container");
+    questionSection.innerHTML = "";
 
+    let scoreSection = document.querySelector(".score-flex-container");
     let doneDiv = document.createElement("div");
     doneDiv.textContent = "All Done!";
     doneDiv.className = "done";
-    section.appendChild(doneDiv);
+    scoreSection.appendChild(doneDiv);
 
     let scoreDiv = document.createElement("div");
     scoreDiv.textContent = "Your final score is " + score;
     scoreDiv.className = "score";
-    section.appendChild(scoreDiv);
+    scoreSection.appendChild(scoreDiv);
+
+    let inputForm = document.createElement("form");
+
+    let labelElement = document.createElement("label");
+    labelElement.setAttribute("for", "initials");
+    labelElement.textContent = "Enter initials:";
+
+    let inputElement = document.createElement("input");
+    inputElement.type = "text";
+    inputElement.id = "initials";
+    inputElement.name = "initials";
+
+    let inputButtonElement = document.createElement("input");
+    inputButtonElement.type = "button";
+    inputButtonElement.value = "Submit";
+    inputButtonElement.id = "inputButton";
+
+    inputForm.appendChild(labelElement);
+    inputForm.appendChild(inputElement);
+    inputForm.appendChild(inputButtonElement);
+
+    scoreSection.appendChild(inputForm);
 }
 
 function checkAnswerAndPrintNextQuestion(event) {
-    var targetOption = event.target;
-    let section = document.querySelector(".question-flex-container");
-    let answerDiv = document.createElement("div");
-    answerDiv.className = "answer";
+    if(event.target && event.target.className=="questionOption") {
+        var targetOption = event.target;
+        let section = document.querySelector(".question-flex-container");
+        let answerDiv = document.createElement("div");
+        answerDiv.className = "answer";
 
-    if (targetOption.textContent === currentQuestion.options[currentQuestion.answer]) {
-        answerDiv.textContent = "Correct!"
-        score = score + 10;
-        console.log("in correct score " + score);
-    } else {
-        answerDiv.textContent = "Wrong!"
-        console.log("in wrong score " + score);
-        var timerReturn = timerDecrementByCount(15);
-        if (!timerReturn) {
-            return;
+        if (targetOption.textContent === currentQuestion.options[currentQuestion.answer]) {
+            answerDiv.textContent = "Correct!"
+            score = score + 10;
+        } else {
+            answerDiv.textContent = "Wrong!"
+            var timerReturn = timerDecrementByCount(15);
+            if (!timerReturn) {
+                return;
+            }
         }
-    }
 
-    currentQuestionCount++;
-    if (currentQuestionCount < questionArray.length) {
-        printQuestion();
-    } else {
-        printDone();
-    }
+        currentQuestionCount++;
+        if (currentQuestionCount < questionArray.length) {
+            printQuestion();
+        } else {
+            clearInterval(timerInterval);
+            printDone();
+        }
     
-    section.appendChild(answerDiv);
+        section.appendChild(answerDiv);
+    }
 }
 
 function timerDecrement() {
@@ -141,6 +166,18 @@ function timerDecrementByCount(count) {
 }
 
 
+function handleButtonClick(event) {
+    event.preventDefault();
+    if(event.target && event.target.id=="inputButton"){
+        console.log("inside if of handleButtonClick")
+        var inputTextElement = document.getElementById("initials");
+        var initials = inputTextElement.value;
+
+        localStorage.setItem("score", initials + ":" + score);
+   }
+}
+
+
 var startBt = document.getElementById("startButton");
 startBt.addEventListener("click", clearIntroTextAndPrintFirstQuestion);
 
@@ -148,3 +185,6 @@ var questionOptionSelector = document.querySelector(".question-flex-container");
 questionOptionSelector.addEventListener("click", checkAnswerAndPrintNextQuestion);
 
 var timerElement = document.getElementById("timer");
+
+var scoreContainer = document.querySelector(".score-flex-container");
+scoreContainer.addEventListener("click", handleButtonClick);
