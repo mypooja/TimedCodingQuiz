@@ -32,8 +32,9 @@ var questionArray = [dataTypeQuestion, arrayQuestions, conditionalQuestion, stri
 
 var currentQuestion;
 var currentQuestionCount = 0;
-var secondsLeft = 25;
+var secondsLeft = 75;
 var timerInterval;
+var score = 0;
 
 function setTime() {
     // Sets interval in variable
@@ -68,18 +69,18 @@ function printQuestion() {
 }
 
 function printDone() {
-    console.log("in done");
     let section = document.querySelector(".question-flex-container");
     section.innerHTML = "";
-
-    console.log("section inner html" + section.innerHTML);
 
     let doneDiv = document.createElement("div");
     doneDiv.textContent = "All Done!";
     doneDiv.className = "done";
     section.appendChild(doneDiv);
 
-    console.log("section inner html" + section.innerHTML);
+    let scoreDiv = document.createElement("div");
+    scoreDiv.textContent = "Your final score is " + score;
+    scoreDiv.className = "score";
+    section.appendChild(scoreDiv);
 }
 
 function checkAnswerAndPrintNextQuestion(event) {
@@ -90,8 +91,11 @@ function checkAnswerAndPrintNextQuestion(event) {
 
     if (targetOption.textContent === currentQuestion.options[currentQuestion.answer]) {
         answerDiv.textContent = "Correct!"
+        score = score + 10;
+        console.log("in correct score " + score);
     } else {
         answerDiv.textContent = "Wrong!"
+        console.log("in wrong score " + score);
         var timerReturn = timerDecrementByCount(15);
         if (!timerReturn) {
             return;
@@ -110,10 +114,8 @@ function checkAnswerAndPrintNextQuestion(event) {
 
 function timerDecrement() {
     timerElement.textContent = secondsLeft--;
-    console.log("in timerDecrement" + secondsLeft);
     if (secondsLeft <= 0) {
         timerElement.textContent = 0;
-        console.log("in timerDecrement 0");
         printDone();
         clearInterval(timerInterval);
         return 0;
@@ -128,9 +130,7 @@ function timerDecrementByCount(count) {
         secondsLeft = 0;
     }
     timerElement.textContent = secondsLeft;
-    console.log("in timerDecrementByCount" + secondsLeft);
     if (secondsLeft == 0) {
-        console.log("in timerDecrementByCount 0");
         printDone();
         clearInterval(timerInterval);
         return 0;
